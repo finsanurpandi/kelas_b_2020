@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Lecture extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['nidn', 'nama', 'status'];
+
+    protected $primaryKey = 'nidn';
+    public $incrementing = false;
+
+    // function getLectureStudent()
+    // {
+    //     $this->belongTo('Student');
+    // }
 }

@@ -89,5 +89,31 @@
             @yield('content')
         </main>
     </div>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        @if(session('status'))
+            Swal.fire({
+                title: 'Congratulations!',
+                text: " {{ Session::get('status') }}",
+                icon: 'success',
+                type: 'success',
+                timer: 3000,
+            })
+        @endif
+
+        @if($errors->all())
+            @php $message = ''; 
+            foreach($errors->all() as $error){
+                $message .= "<li>".$error."</li>";
+            }
+            @endphp
+            Swal.fire({
+                title: 'Error!',
+                text: " {!! $message !!}",
+                icon: 'error',
+                type: 'error',
+            })
+        @endif
+    </script>
 </body>
 </html>
