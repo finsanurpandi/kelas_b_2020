@@ -4,18 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Lecture extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
-    protected $fillable = ['nidn', 'nama', 'status'];
-
+    // protected $table = 'dosen';
     protected $primaryKey = 'nidn';
-    public $incrementing = false;
-
-    // function getLectureStudent()
-    // {
-    //     $this->belongTo('Student');
-    // }
+    protected $fillable = ['nidn', 'nama', 'status'];
 }

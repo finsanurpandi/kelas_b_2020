@@ -52,16 +52,19 @@
                                 </li>
                             @endif
                         @else
-                            @can('manage-student')
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('student.show') }}">Student</a>
-                            </li>
-                            @endcan
-                            @can('manage-lecture')
-                            <li class="nav-item">
-                                <a class="nav-link" href="/lecture">Lecture</a>
-                            </li>
-                            @endcan
+                        @can('manage-lecture')
+                        <li class="nav-item">
+                            <a class="nav-link" href="/lecture">Lecture</a>
+                        </li>
+                        @endcan
+                        @can('manage-student')
+                        <li class="nav-item">
+                            <a class="nav-link" href="/student">Student</a>
+                        </li>
+                        @endcan
+                        <li class="nav-item">
+                            <a class="nav-link" href="/lecture/recycle_bin">Recycle Bin</a>
+                        </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -94,26 +97,43 @@
         @if(session('status'))
             Swal.fire({
                 title: 'Congratulations!',
-                text: " {{ Session::get('status') }}",
-                icon: 'success',
-                type: 'success',
-                timer: 3000,
+                text: "{{ session('status') }}",
+                icon: 'Success',
+                timer: 3000
+            })
+        @endif
+        @if($errors->any())
+            @php
+                $message = '';
+                foreach($errors->all() as $error)
+                {
+                    $message .= $error."<br/>";
+                }
+            @endphp
+            Swal.fire({
+                title: 'Error',
+                html: "{!! $message !!}",
+                icon: 'error',
             })
         @endif
 
-        @if($errors->all())
-            @php $message = ''; 
-            foreach($errors->all() as $error){
-                $message .= "<li>".$error."</li>";
-            }
-            @endphp
+        function deleteConfirmation(nama)
+        {
+            var form = event.target.form;
             Swal.fire({
-                title: 'Error!',
-                text: " {!! $message !!}",
-                icon: 'error',
-                type: 'error',
-            })
-        @endif
+                title: 'Apakah anda yakin?',
+                icon: 'warning',
+                html: "Anda akan menghapus data dengan nama <strong>"+nama+"</strong> dan tidak dapat mengembalikannya kembali",
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus saja!',
+            }). then((result) => {
+                if(result.value) {
+                    form.submit();
+                }
+            });
+        }
     </script>
 </body>
 </html>
