@@ -14,4 +14,15 @@ class Lecture extends Model
     // protected $table = 'dosen';
     protected $primaryKey = 'nidn';
     protected $fillable = ['nidn', 'nama', 'status'];
+
+    public function students()
+    {
+        return $this->hasMany(Student::class, 'nidn', 'nidn');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id')
+                        ->withDefault(['name' => 'Prodi belum dipilih']);
+    }
 }

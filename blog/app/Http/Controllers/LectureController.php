@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Lecture;
+use App\Models\Department;
 use App\Http\Requests\StoreLectureRequest;
 use Session;
 
@@ -11,7 +12,9 @@ class LectureController extends Controller
 {
     public function index()
     {
-        $data['lectures'] = Lecture::all();
+        // $data['lectures'] = Lecture::all();
+        $data['lectures'] = Lecture::with('department')->get();
+        $data['department'] = Department::find(3)->student;
 
         return view('lecture.index')->with($data);
     }
@@ -94,5 +97,14 @@ class LectureController extends Controller
         Session::flash('status', 'Semua data berhasil dihilangkan!!!');   
         
         return redirect()->back();
+    }
+
+    // Relationship
+    public function students($id)
+    {
+        $data['students'] = Lecture::find($id)->students;
+        // $data['students'] = Lecture::find($id)->students()->orderBy('npm', 'asc')->get();
+
+        return view('lecture.students')->with($data);
     }
 }
