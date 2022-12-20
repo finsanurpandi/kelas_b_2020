@@ -3,14 +3,20 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header">{{ __('Dashboard') }}</div>
 
                 <div class="card-body">
                     <a href="lecture/create" class="btn btn-primary">TAMBAH DATA</a>
                     <hr/>
-                    {{ $department}}
+                    @foreach ($user->unreadNotifications as $notification)
+                      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        User dengan email <strong> {{ $notification->data['email']}} </strong> sudah berhasil Login 
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" onclick="markAsRead('{{ $notification->id }}');" aria-label="Close"></button>
+                      </div>
+                      {{-- {{ $notification->markAsRead() }} --}}
+                    @endforeach
                     @if($lectures->isEmpty())
                         Tidak ada ada.
                     @else

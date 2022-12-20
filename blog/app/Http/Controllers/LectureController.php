@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Lecture;
 use App\Models\Department;
 use App\Http\Requests\StoreLectureRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Session;
 
 class LectureController extends Controller
@@ -15,6 +17,8 @@ class LectureController extends Controller
         // $data['lectures'] = Lecture::all();
         $data['lectures'] = Lecture::with('department')->get();
         $data['department'] = Department::find(3)->student;
+
+        $data['user'] = Auth::user();
 
         return view('lecture.index')->with($data);
     }
@@ -106,5 +110,11 @@ class LectureController extends Controller
         // $data['students'] = Lecture::find($id)->students()->orderBy('npm', 'asc')->get();
 
         return view('lecture.students')->with($data);
+    }
+
+    public function markAsRead(Request $request)
+    {
+        DB::table('notifications')->where('id', $request->id)
+                ->update(['read_at' => now()]);
     }
 }
